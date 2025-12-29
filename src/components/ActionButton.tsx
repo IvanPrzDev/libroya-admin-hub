@@ -21,7 +21,7 @@ const ActionButton = ({ variant, onClick, size = "sm" }: ActionButtonProps) => {
           : "bg-libroya-error hover:bg-libroya-error/90 text-white"
       )}
     >
-      {isApprove ? "Approve" : "Reject"}
+      {isApprove ? "Aprobar" : "Rechazar"}
     </Button>
   );
 };

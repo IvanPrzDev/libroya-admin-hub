@@ -10,14 +10,14 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
 
 const mockUsers = [
-  { id: 1, name: "Juan Perez", email: "juan@email.com", phone: "+1 234 567 890", avatar: "https://i.pravatar.cc/150?u=1", role: "member", joinedDate: "Jan 15, 2024", reservations: 5, status: "active" },
-  { id: 2, name: "Maria Lopez", email: "maria@email.com", phone: "+1 234 567 891", avatar: "https://i.pravatar.cc/150?u=2", role: "member", joinedDate: "Feb 20, 2024", reservations: 12, status: "active" },
-  { id: 3, name: "Andres Castillo", email: "andres@email.com", phone: "+1 234 567 892", avatar: "https://i.pravatar.cc/150?u=3", role: "premium", joinedDate: "Mar 10, 2024", reservations: 8, status: "active" },
-  { id: 4, name: "Laura Gómez", email: "laura@email.com", phone: "+1 234 567 893", avatar: "https://i.pravatar.cc/150?u=4", role: "member", joinedDate: "Jan 5, 2024", reservations: 3, status: "inactive" },
-  { id: 5, name: "Daniel Vega", email: "daniel@email.com", phone: "+1 234 567 894", avatar: "https://i.pravatar.cc/150?u=5", role: "premium", joinedDate: "Dec 12, 2023", reservations: 20, status: "active" },
-  { id: 6, name: "Cristina Ruiz", email: "cristina@email.com", phone: "+1 234 567 895", avatar: "https://i.pravatar.cc/150?u=6", role: "member", joinedDate: "Apr 1, 2024", reservations: 1, status: "active" },
-  { id: 7, name: "Pedro Martinez", email: "pedro@email.com", phone: "+1 234 567 896", avatar: "https://i.pravatar.cc/150?u=7", role: "admin", joinedDate: "Nov 1, 2023", reservations: 0, status: "active" },
-  { id: 8, name: "Ana García", email: "ana@email.com", phone: "+1 234 567 897", avatar: "https://i.pravatar.cc/150?u=8", role: "member", joinedDate: "Feb 28, 2024", reservations: 7, status: "active" },
+  { id: 1, name: "Juan Pérez", email: "juan@email.com", phone: "+1 234 567 890", avatar: "https://i.pravatar.cc/150?u=1", role: "miembro", joinedDate: "15 Ene, 2024", reservations: 5, status: "activo" },
+  { id: 2, name: "María López", email: "maria@email.com", phone: "+1 234 567 891", avatar: "https://i.pravatar.cc/150?u=2", role: "miembro", joinedDate: "20 Feb, 2024", reservations: 12, status: "activo" },
+  { id: 3, name: "Andrés Castillo", email: "andres@email.com", phone: "+1 234 567 892", avatar: "https://i.pravatar.cc/150?u=3", role: "premium", joinedDate: "10 Mar, 2024", reservations: 8, status: "activo" },
+  { id: 4, name: "Laura Gómez", email: "laura@email.com", phone: "+1 234 567 893", avatar: "https://i.pravatar.cc/150?u=4", role: "miembro", joinedDate: "5 Ene, 2024", reservations: 3, status: "inactivo" },
+  { id: 5, name: "Daniel Vega", email: "daniel@email.com", phone: "+1 234 567 894", avatar: "https://i.pravatar.cc/150?u=5", role: "premium", joinedDate: "12 Dic, 2023", reservations: 20, status: "activo" },
+  { id: 6, name: "Cristina Ruiz", email: "cristina@email.com", phone: "+1 234 567 895", avatar: "https://i.pravatar.cc/150?u=6", role: "miembro", joinedDate: "1 Abr, 2024", reservations: 1, status: "activo" },
+  { id: 7, name: "Pedro Martínez", email: "pedro@email.com", phone: "+1 234 567 896", avatar: "https://i.pravatar.cc/150?u=7", role: "admin", joinedDate: "1 Nov, 2023", reservations: 0, status: "activo" },
+  { id: 8, name: "Ana García", email: "ana@email.com", phone: "+1 234 567 897", avatar: "https://i.pravatar.cc/150?u=8", role: "miembro", joinedDate: "28 Feb, 2024", reservations: 7, status: "activo" },
 ];
 
 const UsersPage = () => {
@@ -43,27 +43,38 @@ const UsersPage = () => {
     }
   };
 
+  const getRoleLabel = (role: string) => {
+    switch (role) {
+      case "admin":
+        return "Administrador";
+      case "premium":
+        return "Premium";
+      default:
+        return "Miembro";
+    }
+  };
+
   const getStatusClass = (status: string) => {
-    return status === "active" 
+    return status === "activo" 
       ? "bg-libroya-success text-white" 
       : "bg-muted-foreground text-white";
   };
 
   return (
     <>
-      <AdminHeader title="Users" />
+      <AdminHeader title="Usuarios" />
       
       <div className="flex-1 overflow-auto p-6">
         <Card className="shadow-card">
           <CardHeader className="pb-4">
             <div className="flex items-center justify-between">
               <div>
-                <CardTitle className="text-xl font-semibold">All Users</CardTitle>
-                <p className="text-sm text-muted-foreground mt-1">{mockUsers.length} registered users</p>
+                <CardTitle className="text-xl font-semibold">Todos los Usuarios</CardTitle>
+                <p className="text-sm text-muted-foreground mt-1">{mockUsers.length} usuarios registrados</p>
               </div>
               <Button className="gap-2 bg-libroya-green hover:bg-libroya-green-light">
                 <Plus size={16} />
-                Add User
+                Agregar Usuario
               </Button>
             </div>
             
@@ -71,7 +82,7 @@ const UsersPage = () => {
               <div className="relative flex-1 max-w-md">
                 <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground" size={18} />
                 <Input 
-                  placeholder="Search by name or email..." 
+                  placeholder="Buscar por nombre o correo..." 
                   value={searchTerm}
                   onChange={(e) => setSearchTerm(e.target.value)}
                   className="pl-10"
@@ -80,13 +91,13 @@ const UsersPage = () => {
               <Select value={roleFilter} onValueChange={setRoleFilter}>
                 <SelectTrigger className="w-40">
                   <Filter size={16} className="mr-2" />
-                  <SelectValue placeholder="Filter by role" />
+                  <SelectValue placeholder="Filtrar por rol" />
                 </SelectTrigger>
                 <SelectContent>
-                  <SelectItem value="all">All Roles</SelectItem>
-                  <SelectItem value="admin">Admin</SelectItem>
+                  <SelectItem value="all">Todos los Roles</SelectItem>
+                  <SelectItem value="admin">Administrador</SelectItem>
                   <SelectItem value="premium">Premium</SelectItem>
-                  <SelectItem value="member">Member</SelectItem>
+                  <SelectItem value="miembro">Miembro</SelectItem>
                 </SelectContent>
               </Select>
             </div>
@@ -112,7 +123,7 @@ const UsersPage = () => {
                         <div>
                           <p className="font-semibold text-foreground">{user.name}</p>
                           <Badge variant="outline" className={`text-xs ${getRoleBadgeClass(user.role)}`}>
-                            {user.role.charAt(0).toUpperCase() + user.role.slice(1)}
+                            {getRoleLabel(user.role)}
                           </Badge>
                         </div>
                       </div>
@@ -123,10 +134,10 @@ const UsersPage = () => {
                           </Button>
                         </DropdownMenuTrigger>
                         <DropdownMenuContent align="end">
-                          <DropdownMenuItem>View Profile</DropdownMenuItem>
-                          <DropdownMenuItem>Edit</DropdownMenuItem>
-                          <DropdownMenuItem>View Reservations</DropdownMenuItem>
-                          <DropdownMenuItem className="text-destructive">Deactivate</DropdownMenuItem>
+                          <DropdownMenuItem>Ver Perfil</DropdownMenuItem>
+                          <DropdownMenuItem>Editar</DropdownMenuItem>
+                          <DropdownMenuItem>Ver Reservas</DropdownMenuItem>
+                          <DropdownMenuItem className="text-destructive">Desactivar</DropdownMenuItem>
                         </DropdownMenuContent>
                       </DropdownMenu>
                     </div>
@@ -142,13 +153,13 @@ const UsersPage = () => {
                       </div>
                       <div className="flex items-center gap-2 text-muted-foreground">
                         <Calendar size={14} />
-                        <span>Joined {user.joinedDate}</span>
+                        <span>Registrado el {user.joinedDate}</span>
                       </div>
                     </div>
 
                     <div className="flex items-center justify-between mt-4 pt-3 border-t">
                       <div className="text-sm">
-                        <span className="text-muted-foreground">Reservations: </span>
+                        <span className="text-muted-foreground">Reservas: </span>
                         <span className="font-semibold text-foreground">{user.reservations}</span>
                       </div>
                       <Badge className={`${getStatusClass(user.status)} text-xs`}>
@@ -162,7 +173,7 @@ const UsersPage = () => {
             
             {filteredUsers.length === 0 && (
               <div className="py-12 text-center">
-                <p className="text-muted-foreground">No users found</p>
+                <p className="text-muted-foreground">No se encontraron usuarios</p>
               </div>
             )}
           </CardContent>

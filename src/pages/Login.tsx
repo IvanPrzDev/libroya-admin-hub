@@ -23,8 +23,8 @@ const Login = () => {
     setTimeout(() => {
       setIsLoading(false);
       toast({
-        title: "Welcome back!",
-        description: "You have successfully logged in.",
+        title: "¡Bienvenido!",
+        description: "Has iniciado sesión correctamente.",
       });
       navigate("/dashboard");
     }, 1000);
@@ -41,21 +41,21 @@ const Login = () => {
 
           {/* Title */}
           <h1 className="text-2xl font-bold text-libroya-green text-center mb-8">
-            Login
+            Iniciar Sesión
           </h1>
 
           {/* Form */}
           <form onSubmit={handleSubmit} className="space-y-5">
             <div className="space-y-2">
               <Label htmlFor="email" className="text-foreground font-medium">
-                Email
+                Correo electrónico
               </Label>
               <div className="relative">
                 <Mail className="absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground" size={18} />
                 <Input
                   id="email"
                   type="email"
-                  placeholder="Enter your email"
+                  placeholder="Ingresa tu correo"
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
                   className="pl-10 h-12 bg-secondary/30 border-border focus-visible:ring-primary"
@@ -67,13 +67,13 @@ const Login = () => {
             <div className="space-y-2">
               <div className="flex items-center justify-between">
                 <Label htmlFor="password" className="text-foreground font-medium">
-                  Password
+                  Contraseña
                 </Label>
                 <button
                   type="button"
                   className="text-sm text-libroya-yellow hover:text-libroya-yellow/80 transition-colors"
                 >
-                  Forgot password?
+                  ¿Olvidaste tu contraseña?
                 </button>
               </div>
               <div className="relative">
@@ -81,7 +81,7 @@ const Login = () => {
                 <Input
                   id="password"
                   type={showPassword ? "text" : "password"}
-                  placeholder="Enter your password"
+                  placeholder="Ingresa tu contraseña"
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
                   className="pl-10 pr-10 h-12 bg-secondary/30 border-border focus-visible:ring-primary"
@@ -102,15 +102,15 @@ const Login = () => {
               disabled={isLoading}
               className="w-full h-12 bg-libroya-green hover:bg-libroya-green-light text-white font-semibold text-base rounded-xl transition-all duration-200"
             >
-              {isLoading ? "Logging in..." : "Login"}
+              {isLoading ? "Ingresando..." : "Iniciar Sesión"}
             </Button>
           </form>
 
           {/* Sign up link */}
           <p className="text-center mt-6 text-muted-foreground">
-            Don't have an account?{" "}
+            ¿No tienes una cuenta?{" "}
             <button className="text-libroya-yellow hover:text-libroya-yellow/80 font-medium transition-colors">
-              Sign up
+              Regístrate
             </button>
           </p>
         </div>

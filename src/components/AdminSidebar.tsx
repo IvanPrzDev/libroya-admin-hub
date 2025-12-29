@@ -12,14 +12,13 @@ import {
 import Logo from "./Logo";
 import { cn } from "@/lib/utils";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { useState } from "react";
 
 const navItems = [
-  { icon: LayoutDashboard, label: "Dashboard", path: "/dashboard" },
-  { icon: CalendarCheck, label: "Reservations", path: "/reservations" },
-  { icon: Users, label: "Users", path: "/users" },
-  { icon: BookOpen, label: "Books", path: "/books" },
-  { icon: Settings, label: "Settings", path: "/settings" },
+  { icon: LayoutDashboard, label: "Panel", path: "/dashboard" },
+  { icon: CalendarCheck, label: "Reservas", path: "/reservations" },
+  { icon: Users, label: "Usuarios", path: "/users" },
+  { icon: BookOpen, label: "Libros", path: "/books" },
+  { icon: Settings, label: "Configuración", path: "/settings" },
 ];
 
 interface AdminSidebarProps {
@@ -53,7 +52,7 @@ const AdminSidebar = ({ collapsed = false, onToggle }: AdminSidebarProps) => {
       <div className={cn("p-6", collapsed && "px-4")}>
         <Logo size={collapsed ? "sm" : "md"} showText={!collapsed} variant="sidebar" />
         {!collapsed && (
-          <p className="text-white/60 text-xs mt-1 ml-12">Admin Dashboard</p>
+          <p className="text-white/60 text-xs mt-1 ml-12">Panel de Administración</p>
         )}
       </div>
 
@@ -97,7 +96,7 @@ const AdminSidebar = ({ collapsed = false, onToggle }: AdminSidebarProps) => {
           {!collapsed && (
             <div className="flex-1 min-w-0">
               <p className="text-white font-medium text-sm truncate">Alfredo Gutierrez</p>
-              <p className="text-white/50 text-xs">Admin</p>
+              <p className="text-white/50 text-xs">Administrador</p>
             </div>
           )}
         </div>
@@ -108,7 +107,7 @@ const AdminSidebar = ({ collapsed = false, onToggle }: AdminSidebarProps) => {
           )}
         >
           <LogOut size={18} />
-          {!collapsed && <span className="text-sm">Log out</span>}
+          {!collapsed && <span className="text-sm">Cerrar sesión</span>}
         </button>
       </div>
     </aside>
