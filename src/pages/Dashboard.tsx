@@ -10,31 +10,31 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 
 const mockReservations = [
-  { id: 1, user: { name: "Juan Perez", email: "juan@email.com", avatar: "https://i.pravatar.cc/150?u=1" }, book: { title: "The Great Gatsby", author: "F. Scott Fitzgerald" }, date: "Apr 15, 2024", status: "pending" as const },
-  { id: 2, user: { name: "Maria Lopez", email: "maria@email.com", avatar: "https://i.pravatar.cc/150?u=2" }, book: { title: "Atomic Habits", author: "James Clear" }, date: "Apr 14, 2024", status: "pending" as const },
-  { id: 3, user: { name: "Andres Castillo", email: "andres@email.com", avatar: "https://i.pravatar.cc/150?u=3" }, book: { title: "To Kill a Mockingbird", author: "Harper Lee" }, date: "Apr 14, 2024", status: "approved" as const },
-  { id: 4, user: { name: "Laura Gómez", email: "laura@email.com", avatar: "https://i.pravatar.cc/150?u=4" }, book: { title: "1984", author: "George Orwell" }, date: "Apr 13, 2024", status: "approved" as const },
-  { id: 5, user: { name: "Daniel Vega", email: "daniel@email.com", avatar: "https://i.pravatar.cc/150?u=5" }, book: { title: "The Catcher in the Rye", author: "J.D. Salinger" }, date: "Apr 13, 2024", status: "rejected" as const },
-  { id: 6, user: { name: "Cristina Ruiz", email: "cristina@email.com", avatar: "https://i.pravatar.cc/150?u=6" }, book: { title: "Dune", author: "Frank Herbert" }, date: "Apr 12, 2024", status: "rejected" as const },
+  { id: 1, user: { name: "Juan Pérez", email: "juan@email.com", avatar: "https://i.pravatar.cc/150?u=1" }, book: { title: "El Gran Gatsby", author: "F. Scott Fitzgerald" }, date: "15 Abr, 2024", status: "pending" as const },
+  { id: 2, user: { name: "María López", email: "maria@email.com", avatar: "https://i.pravatar.cc/150?u=2" }, book: { title: "Hábitos Atómicos", author: "James Clear" }, date: "14 Abr, 2024", status: "pending" as const },
+  { id: 3, user: { name: "Andrés Castillo", email: "andres@email.com", avatar: "https://i.pravatar.cc/150?u=3" }, book: { title: "Matar a un Ruiseñor", author: "Harper Lee" }, date: "14 Abr, 2024", status: "approved" as const },
+  { id: 4, user: { name: "Laura Gómez", email: "laura@email.com", avatar: "https://i.pravatar.cc/150?u=4" }, book: { title: "1984", author: "George Orwell" }, date: "13 Abr, 2024", status: "approved" as const },
+  { id: 5, user: { name: "Daniel Vega", email: "daniel@email.com", avatar: "https://i.pravatar.cc/150?u=5" }, book: { title: "El Guardián entre el Centeno", author: "J.D. Salinger" }, date: "13 Abr, 2024", status: "rejected" as const },
+  { id: 6, user: { name: "Cristina Ruiz", email: "cristina@email.com", avatar: "https://i.pravatar.cc/150?u=6" }, book: { title: "Dune", author: "Frank Herbert" }, date: "12 Abr, 2024", status: "rejected" as const },
 ];
 
 const pendingApprovals = [
-  { id: 1, name: "Diego Morillo", book: "Six of Crows", avatar: "https://i.pravatar.cc/150?u=10" },
-  { id: 2, name: "Mariana Saavedra", book: "Brave New World", avatar: "https://i.pravatar.cc/150?u=11" },
-  { id: 3, name: "Raul Jimenez", book: "Digital Fortress", avatar: "https://i.pravatar.cc/150?u=12" },
+  { id: 1, name: "Diego Morillo", book: "Seis de Cuervos", avatar: "https://i.pravatar.cc/150?u=10" },
+  { id: 2, name: "Mariana Saavedra", book: "Un Mundo Feliz", avatar: "https://i.pravatar.cc/150?u=11" },
+  { id: 3, name: "Raúl Jiménez", book: "Fortaleza Digital", avatar: "https://i.pravatar.cc/150?u=12" },
 ];
 
 const recentActivity = [
-  { id: 1, icon: UserPlus, text: "New user registered, Raul Jimenez", time: "2 hours ago", color: "text-libroya-green" },
-  { id: 2, icon: CheckCircle, text: "Laura Gómez reservation confirmed", time: "3 hours ago", color: "text-libroya-success" },
-  { id: 3, icon: BookPlus, text: "Four new books added to the library", time: "2 hours ago", color: "text-libroya-yellow" },
-  { id: 4, icon: KeyRound, text: "Alfredo Gutierrez password changed", time: "16 hours ago", color: "text-libroya-error" },
+  { id: 1, icon: UserPlus, text: "Nuevo usuario registrado: Raúl Jiménez", time: "Hace 2 horas", color: "text-libroya-green" },
+  { id: 2, icon: CheckCircle, text: "Reserva de Laura Gómez confirmada", time: "Hace 3 horas", color: "text-libroya-success" },
+  { id: 3, icon: BookPlus, text: "Cuatro libros nuevos añadidos", time: "Hace 2 horas", color: "text-libroya-yellow" },
+  { id: 4, icon: KeyRound, text: "Alfredo Gutierrez cambió su contraseña", time: "Hace 16 horas", color: "text-libroya-error" },
 ];
 
 const Dashboard = () => {
   return (
     <>
-      <AdminHeader title="Admin Dashboard" />
+      <AdminHeader title="Panel de Administración" />
       
       <div className="flex-1 overflow-auto p-6">
         {/* Metrics */}
@@ -42,29 +42,29 @@ const Dashboard = () => {
           <MetricCard 
             icon={CalendarCheck} 
             value={128} 
-            label="Reservations" 
+            label="Reservas" 
             change="+46" 
             changeType="positive" 
           />
           <MetricCard 
             icon={Users} 
             value={732} 
-            label="Users" 
+            label="Usuarios" 
             change="+8" 
             changeType="positive" 
           />
           <MetricCard 
             icon={BookOpen} 
             value={380} 
-            label="Books" 
-            change="+4 added" 
+            label="Libros" 
+            change="+4 nuevos" 
             changeType="positive" 
           />
           <MetricCard 
             icon={Clock} 
             value={56} 
-            label="Pending" 
-            change="+12 new" 
+            label="Pendientes" 
+            change="+12 nuevos" 
             changeType="positive" 
           />
         </div>
@@ -75,28 +75,28 @@ const Dashboard = () => {
             <Card className="shadow-card">
               <CardHeader className="pb-4">
                 <div className="flex items-center justify-between">
-                  <CardTitle className="text-lg font-semibold">Book Reservations</CardTitle>
+                  <CardTitle className="text-lg font-semibold">Reservas de Libros</CardTitle>
                   <div className="flex items-center gap-2">
                     <Button variant="outline" size="sm" className="gap-2">
                       <Filter size={14} />
-                      All Reservations
+                      Todas las Reservas
                     </Button>
                     <Button variant="outline" size="sm" className="gap-2">
                       <Download size={14} />
-                      Export
+                      Exportar
                     </Button>
                   </div>
                 </div>
                 <div className="flex items-center gap-3 mt-4">
                   <Select defaultValue="all">
                     <SelectTrigger className="w-48">
-                      <SelectValue placeholder="All Reservations" />
+                      <SelectValue placeholder="Todas las Reservas" />
                     </SelectTrigger>
                     <SelectContent>
-                      <SelectItem value="all">All Reservations</SelectItem>
-                      <SelectItem value="pending">Pending</SelectItem>
-                      <SelectItem value="approved">Approved</SelectItem>
-                      <SelectItem value="rejected">Rejected</SelectItem>
+                      <SelectItem value="all">Todas las Reservas</SelectItem>
+                      <SelectItem value="pending">Pendientes</SelectItem>
+                      <SelectItem value="approved">Aprobadas</SelectItem>
+                      <SelectItem value="rejected">Rechazadas</SelectItem>
                     </SelectContent>
                   </Select>
                   <Button variant="ghost" size="icon">
@@ -104,7 +104,7 @@ const Dashboard = () => {
                   </Button>
                   <Button className="ml-auto gap-2 bg-libroya-green hover:bg-libroya-green-light">
                     <Plus size={16} />
-                    Add New
+                    Nueva Reserva
                   </Button>
                 </div>
               </CardHeader>
@@ -112,11 +112,11 @@ const Dashboard = () => {
                 <Table>
                   <TableHeader>
                     <TableRow className="bg-secondary/30">
-                      <TableHead className="font-semibold">User</TableHead>
-                      <TableHead className="font-semibold">Book</TableHead>
-                      <TableHead className="font-semibold">Date</TableHead>
-                      <TableHead className="font-semibold">Status</TableHead>
-                      <TableHead className="font-semibold">Actions</TableHead>
+                      <TableHead className="font-semibold">Usuario</TableHead>
+                      <TableHead className="font-semibold">Libro</TableHead>
+                      <TableHead className="font-semibold">Fecha</TableHead>
+                      <TableHead className="font-semibold">Estado</TableHead>
+                      <TableHead className="font-semibold">Acciones</TableHead>
                     </TableRow>
                   </TableHeader>
                   <TableBody>
@@ -172,7 +172,7 @@ const Dashboard = () => {
             <Card className="shadow-card">
               <CardHeader className="pb-3">
                 <div className="flex items-center justify-between">
-                  <CardTitle className="text-lg font-semibold">Pending Approvals</CardTitle>
+                  <CardTitle className="text-lg font-semibold">Aprobaciones Pendientes</CardTitle>
                   <span className="text-3xl font-bold text-libroya-green">56</span>
                 </div>
                 <div className="w-full h-1.5 bg-secondary rounded-full mt-2">
@@ -207,7 +207,7 @@ const Dashboard = () => {
             {/* Recent Activity */}
             <Card className="shadow-card">
               <CardHeader className="pb-3">
-                <CardTitle className="text-lg font-semibold">Recent Activity</CardTitle>
+                <CardTitle className="text-lg font-semibold">Actividad Reciente</CardTitle>
               </CardHeader>
               <CardContent className="space-y-4">
                 {recentActivity.map((activity, index) => (

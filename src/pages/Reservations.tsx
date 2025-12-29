@@ -13,14 +13,14 @@ import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigge
 import { useToast } from "@/hooks/use-toast";
 
 const mockReservations = [
-  { id: 1, user: { name: "Juan Perez", email: "juan@email.com", avatar: "https://i.pravatar.cc/150?u=1" }, book: { title: "The Great Gatsby", author: "F. Scott Fitzgerald", isbn: "978-0743273565" }, date: "Apr 15, 2024", dueDate: "Apr 29, 2024", status: "pending" as const },
-  { id: 2, user: { name: "Maria Lopez", email: "maria@email.com", avatar: "https://i.pravatar.cc/150?u=2" }, book: { title: "Atomic Habits", author: "James Clear", isbn: "978-0735211292" }, date: "Apr 14, 2024", dueDate: "Apr 28, 2024", status: "pending" as const },
-  { id: 3, user: { name: "Andres Castillo", email: "andres@email.com", avatar: "https://i.pravatar.cc/150?u=3" }, book: { title: "To Kill a Mockingbird", author: "Harper Lee", isbn: "978-0060935467" }, date: "Apr 14, 2024", dueDate: "Apr 28, 2024", status: "approved" as const },
-  { id: 4, user: { name: "Laura Gómez", email: "laura@email.com", avatar: "https://i.pravatar.cc/150?u=4" }, book: { title: "1984", author: "George Orwell", isbn: "978-0451524935" }, date: "Apr 13, 2024", dueDate: "Apr 27, 2024", status: "approved" as const },
-  { id: 5, user: { name: "Daniel Vega", email: "daniel@email.com", avatar: "https://i.pravatar.cc/150?u=5" }, book: { title: "The Catcher in the Rye", author: "J.D. Salinger", isbn: "978-0316769488" }, date: "Apr 13, 2024", dueDate: "Apr 27, 2024", status: "rejected" as const },
-  { id: 6, user: { name: "Cristina Ruiz", email: "cristina@email.com", avatar: "https://i.pravatar.cc/150?u=6" }, book: { title: "Dune", author: "Frank Herbert", isbn: "978-0441172719" }, date: "Apr 12, 2024", dueDate: "Apr 26, 2024", status: "rejected" as const },
-  { id: 7, user: { name: "Pedro Martinez", email: "pedro@email.com", avatar: "https://i.pravatar.cc/150?u=7" }, book: { title: "The Hobbit", author: "J.R.R. Tolkien", isbn: "978-0547928227" }, date: "Apr 11, 2024", dueDate: "Apr 25, 2024", status: "pending" as const },
-  { id: 8, user: { name: "Ana García", email: "ana@email.com", avatar: "https://i.pravatar.cc/150?u=8" }, book: { title: "Pride and Prejudice", author: "Jane Austen", isbn: "978-0141439518" }, date: "Apr 10, 2024", dueDate: "Apr 24, 2024", status: "approved" as const },
+  { id: 1, user: { name: "Juan Pérez", email: "juan@email.com", avatar: "https://i.pravatar.cc/150?u=1" }, book: { title: "El Gran Gatsby", author: "F. Scott Fitzgerald", isbn: "978-0743273565" }, date: "15 Abr, 2024", dueDate: "29 Abr, 2024", status: "pending" as const },
+  { id: 2, user: { name: "María López", email: "maria@email.com", avatar: "https://i.pravatar.cc/150?u=2" }, book: { title: "Hábitos Atómicos", author: "James Clear", isbn: "978-0735211292" }, date: "14 Abr, 2024", dueDate: "28 Abr, 2024", status: "pending" as const },
+  { id: 3, user: { name: "Andrés Castillo", email: "andres@email.com", avatar: "https://i.pravatar.cc/150?u=3" }, book: { title: "Matar a un Ruiseñor", author: "Harper Lee", isbn: "978-0060935467" }, date: "14 Abr, 2024", dueDate: "28 Abr, 2024", status: "approved" as const },
+  { id: 4, user: { name: "Laura Gómez", email: "laura@email.com", avatar: "https://i.pravatar.cc/150?u=4" }, book: { title: "1984", author: "George Orwell", isbn: "978-0451524935" }, date: "13 Abr, 2024", dueDate: "27 Abr, 2024", status: "approved" as const },
+  { id: 5, user: { name: "Daniel Vega", email: "daniel@email.com", avatar: "https://i.pravatar.cc/150?u=5" }, book: { title: "El Guardián entre el Centeno", author: "J.D. Salinger", isbn: "978-0316769488" }, date: "13 Abr, 2024", dueDate: "27 Abr, 2024", status: "rejected" as const },
+  { id: 6, user: { name: "Cristina Ruiz", email: "cristina@email.com", avatar: "https://i.pravatar.cc/150?u=6" }, book: { title: "Dune", author: "Frank Herbert", isbn: "978-0441172719" }, date: "12 Abr, 2024", dueDate: "26 Abr, 2024", status: "rejected" as const },
+  { id: 7, user: { name: "Pedro Martínez", email: "pedro@email.com", avatar: "https://i.pravatar.cc/150?u=7" }, book: { title: "El Hobbit", author: "J.R.R. Tolkien", isbn: "978-0547928227" }, date: "11 Abr, 2024", dueDate: "25 Abr, 2024", status: "pending" as const },
+  { id: 8, user: { name: "Ana García", email: "ana@email.com", avatar: "https://i.pravatar.cc/150?u=8" }, book: { title: "Orgullo y Prejuicio", author: "Jane Austen", isbn: "978-0141439518" }, date: "10 Abr, 2024", dueDate: "24 Abr, 2024", status: "approved" as const },
 ];
 
 const Reservations = () => {
@@ -38,31 +38,31 @@ const Reservations = () => {
 
   const handleApprove = (id: number) => {
     toast({
-      title: "Reservation Approved",
-      description: "The reservation has been successfully approved.",
+      title: "Reserva Aprobada",
+      description: "La reserva ha sido aprobada exitosamente.",
     });
   };
 
   const handleReject = (id: number) => {
     toast({
-      title: "Reservation Rejected",
-      description: "The reservation has been rejected.",
+      title: "Reserva Rechazada",
+      description: "La reserva ha sido rechazada.",
       variant: "destructive",
     });
   };
 
   return (
     <>
-      <AdminHeader title="Reservations" />
+      <AdminHeader title="Reservas" />
       
       <div className="flex-1 overflow-auto p-6">
         <Card className="shadow-card">
           <CardHeader className="pb-4">
             <div className="flex items-center justify-between">
-              <CardTitle className="text-xl font-semibold">All Reservations</CardTitle>
+              <CardTitle className="text-xl font-semibold">Todas las Reservas</CardTitle>
               <Button className="gap-2 bg-libroya-green hover:bg-libroya-green-light">
                 <Plus size={16} />
-                New Reservation
+                Nueva Reserva
               </Button>
             </div>
             
@@ -70,7 +70,7 @@ const Reservations = () => {
               <div className="relative flex-1 max-w-md">
                 <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground" size={18} />
                 <Input 
-                  placeholder="Search by user or book..." 
+                  placeholder="Buscar por usuario o libro..." 
                   value={searchTerm}
                   onChange={(e) => setSearchTerm(e.target.value)}
                   className="pl-10"
@@ -79,18 +79,18 @@ const Reservations = () => {
               <Select value={statusFilter} onValueChange={setStatusFilter}>
                 <SelectTrigger className="w-48">
                   <Filter size={16} className="mr-2" />
-                  <SelectValue placeholder="Filter by status" />
+                  <SelectValue placeholder="Filtrar por estado" />
                 </SelectTrigger>
                 <SelectContent>
-                  <SelectItem value="all">All Status</SelectItem>
-                  <SelectItem value="pending">Pending</SelectItem>
-                  <SelectItem value="approved">Approved</SelectItem>
-                  <SelectItem value="rejected">Rejected</SelectItem>
+                  <SelectItem value="all">Todos los Estados</SelectItem>
+                  <SelectItem value="pending">Pendientes</SelectItem>
+                  <SelectItem value="approved">Aprobadas</SelectItem>
+                  <SelectItem value="rejected">Rechazadas</SelectItem>
                 </SelectContent>
               </Select>
               <Button variant="outline" className="gap-2">
                 <Download size={16} />
-                Export
+                Exportar
               </Button>
             </div>
           </CardHeader>
@@ -99,12 +99,12 @@ const Reservations = () => {
             <Table>
               <TableHeader>
                 <TableRow className="bg-secondary/30">
-                  <TableHead className="font-semibold">User</TableHead>
-                  <TableHead className="font-semibold">Book</TableHead>
-                  <TableHead className="font-semibold">Request Date</TableHead>
-                  <TableHead className="font-semibold">Due Date</TableHead>
-                  <TableHead className="font-semibold">Status</TableHead>
-                  <TableHead className="font-semibold">Actions</TableHead>
+                  <TableHead className="font-semibold">Usuario</TableHead>
+                  <TableHead className="font-semibold">Libro</TableHead>
+                  <TableHead className="font-semibold">Fecha Solicitud</TableHead>
+                  <TableHead className="font-semibold">Fecha Devolución</TableHead>
+                  <TableHead className="font-semibold">Estado</TableHead>
+                  <TableHead className="font-semibold">Acciones</TableHead>
                 </TableRow>
               </TableHeader>
               <TableBody>
@@ -154,9 +154,9 @@ const Reservations = () => {
                             </Button>
                           </DropdownMenuTrigger>
                           <DropdownMenuContent align="end">
-                            <DropdownMenuItem>View Details</DropdownMenuItem>
-                            <DropdownMenuItem>Edit</DropdownMenuItem>
-                            <DropdownMenuItem className="text-destructive">Delete</DropdownMenuItem>
+                            <DropdownMenuItem>Ver Detalles</DropdownMenuItem>
+                            <DropdownMenuItem>Editar</DropdownMenuItem>
+                            <DropdownMenuItem className="text-destructive">Eliminar</DropdownMenuItem>
                           </DropdownMenuContent>
                         </DropdownMenu>
                       </div>
@@ -168,7 +168,7 @@ const Reservations = () => {
             
             {filteredReservations.length === 0 && (
               <div className="py-12 text-center">
-                <p className="text-muted-foreground">No reservations found</p>
+                <p className="text-muted-foreground">No se encontraron reservas</p>
               </div>
             )}
           </CardContent>

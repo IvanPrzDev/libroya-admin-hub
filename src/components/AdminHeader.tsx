@@ -17,7 +17,7 @@ const AdminHeader = ({ title }: AdminHeaderProps) => {
         <div className="relative w-80">
           <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground" size={18} />
           <Input 
-            placeholder="Search anything here" 
+            placeholder="Buscar aquí..." 
             className="pl-10 bg-secondary/50 border-0 focus-visible:ring-1 focus-visible:ring-primary"
           />
         </div>

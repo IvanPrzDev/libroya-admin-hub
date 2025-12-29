@@ -1,4 +1,4 @@
-import { Bell, Shield, User, Palette, Globe, Database } from "lucide-react";
+import { Bell, Shield, User, Database } from "lucide-react";
 import AdminHeader from "@/components/AdminHeader";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Switch } from "@/components/ui/switch";
@@ -10,7 +10,7 @@ import { Separator } from "@/components/ui/separator";
 const SettingsPage = () => {
   return (
     <>
-      <AdminHeader title="Settings" />
+      <AdminHeader title="Configuración" />
       
       <div className="flex-1 overflow-auto p-6">
         <div className="max-w-4xl mx-auto space-y-6">
@@ -22,28 +22,28 @@ const SettingsPage = () => {
                   <User size={20} className="text-libroya-green" />
                 </div>
                 <div>
-                  <CardTitle>Profile Settings</CardTitle>
-                  <CardDescription>Manage your account information</CardDescription>
+                  <CardTitle>Configuración del Perfil</CardTitle>
+                  <CardDescription>Administra la información de tu cuenta</CardDescription>
                 </div>
               </div>
             </CardHeader>
             <CardContent className="space-y-4">
               <div className="grid grid-cols-2 gap-4">
                 <div className="space-y-2">
-                  <Label htmlFor="firstName">First Name</Label>
+                  <Label htmlFor="firstName">Nombre</Label>
                   <Input id="firstName" defaultValue="Alfredo" />
                 </div>
                 <div className="space-y-2">
-                  <Label htmlFor="lastName">Last Name</Label>
+                  <Label htmlFor="lastName">Apellido</Label>
                   <Input id="lastName" defaultValue="Gutierrez" />
                 </div>
               </div>
               <div className="space-y-2">
-                <Label htmlFor="email">Email</Label>
+                <Label htmlFor="email">Correo electrónico</Label>
                 <Input id="email" type="email" defaultValue="alfredo@libroya.com" />
               </div>
               <Button className="bg-libroya-green hover:bg-libroya-green-light">
-                Save Changes
+                Guardar Cambios
               </Button>
             </CardContent>
           </Card>
@@ -56,32 +56,32 @@ const SettingsPage = () => {
                   <Bell size={20} className="text-libroya-yellow" />
                 </div>
                 <div>
-                  <CardTitle>Notifications</CardTitle>
-                  <CardDescription>Configure how you receive notifications</CardDescription>
+                  <CardTitle>Notificaciones</CardTitle>
+                  <CardDescription>Configura cómo recibes las notificaciones</CardDescription>
                 </div>
               </div>
             </CardHeader>
             <CardContent className="space-y-4">
               <div className="flex items-center justify-between">
                 <div>
-                  <Label>Email Notifications</Label>
-                  <p className="text-sm text-muted-foreground">Receive email updates about reservations</p>
+                  <Label>Notificaciones por correo</Label>
+                  <p className="text-sm text-muted-foreground">Recibe actualizaciones sobre las reservas</p>
                 </div>
                 <Switch defaultChecked />
               </div>
               <Separator />
               <div className="flex items-center justify-between">
                 <div>
-                  <Label>New User Alerts</Label>
-                  <p className="text-sm text-muted-foreground">Get notified when new users register</p>
+                  <Label>Alertas de nuevos usuarios</Label>
+                  <p className="text-sm text-muted-foreground">Recibe alertas cuando se registren nuevos usuarios</p>
                 </div>
                 <Switch defaultChecked />
               </div>
               <Separator />
               <div className="flex items-center justify-between">
                 <div>
-                  <Label>Pending Approvals</Label>
-                  <p className="text-sm text-muted-foreground">Alerts for pending reservation approvals</p>
+                  <Label>Aprobaciones pendientes</Label>
+                  <p className="text-sm text-muted-foreground">Alertas sobre reservas pendientes de aprobar</p>
                 </div>
                 <Switch defaultChecked />
               </div>
@@ -96,26 +96,26 @@ const SettingsPage = () => {
                   <Shield size={20} className="text-libroya-error" />
                 </div>
                 <div>
-                  <CardTitle>Security</CardTitle>
-                  <CardDescription>Manage your security preferences</CardDescription>
+                  <CardTitle>Seguridad</CardTitle>
+                  <CardDescription>Administra tus preferencias de seguridad</CardDescription>
                 </div>
               </div>
             </CardHeader>
             <CardContent className="space-y-4">
               <div className="flex items-center justify-between">
                 <div>
-                  <Label>Two-Factor Authentication</Label>
-                  <p className="text-sm text-muted-foreground">Add an extra layer of security</p>
+                  <Label>Autenticación de dos factores</Label>
+                  <p className="text-sm text-muted-foreground">Añade una capa extra de seguridad</p>
                 </div>
                 <Switch />
               </div>
               <Separator />
               <div className="space-y-2">
-                <Label>Change Password</Label>
+                <Label>Cambiar contraseña</Label>
                 <div className="flex gap-2">
-                  <Input type="password" placeholder="Current password" className="flex-1" />
-                  <Input type="password" placeholder="New password" className="flex-1" />
-                  <Button variant="outline">Update</Button>
+                  <Input type="password" placeholder="Contraseña actual" className="flex-1" />
+                  <Input type="password" placeholder="Nueva contraseña" className="flex-1" />
+                  <Button variant="outline">Actualizar</Button>
                 </div>
               </div>
             </CardContent>
@@ -129,24 +129,24 @@ const SettingsPage = () => {
                   <Database size={20} className="text-libroya-green" />
                 </div>
                 <div>
-                  <CardTitle>System</CardTitle>
-                  <CardDescription>General system settings</CardDescription>
+                  <CardTitle>Sistema</CardTitle>
+                  <CardDescription>Configuración general del sistema</CardDescription>
                 </div>
               </div>
             </CardHeader>
             <CardContent className="space-y-4">
               <div className="flex items-center justify-between">
                 <div>
-                  <Label>Automatic Backups</Label>
-                  <p className="text-sm text-muted-foreground">Daily backup of all data</p>
+                  <Label>Copias de seguridad automáticas</Label>
+                  <p className="text-sm text-muted-foreground">Respaldo diario de todos los datos</p>
                 </div>
                 <Switch defaultChecked />
               </div>
               <Separator />
               <div className="flex items-center justify-between">
                 <div>
-                  <Label>Maintenance Mode</Label>
-                  <p className="text-sm text-muted-foreground">Temporarily disable public access</p>
+                  <Label>Modo de mantenimiento</Label>
+                  <p className="text-sm text-muted-foreground">Deshabilitar temporalmente el acceso público</p>
                 </div>
                 <Switch />
               </div>

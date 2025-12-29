@@ -8,15 +8,15 @@ interface StatusBadgeProps {
 
 const statusConfig = {
   pending: {
-    label: "Pending",
+    label: "Pendiente",
     className: "bg-libroya-yellow/15 text-libroya-yellow border-libroya-yellow/30",
   },
   approved: {
-    label: "Approved",
+    label: "Aprobado",
     className: "bg-libroya-success/15 text-libroya-success border-libroya-success/30",
   },
   rejected: {
-    label: "Rejected",
+    label: "Rechazado",
     className: "bg-libroya-error/15 text-libroya-error border-libroya-error/30",
   },
 };
