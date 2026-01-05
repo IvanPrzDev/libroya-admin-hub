@@ -86,6 +86,7 @@ const BooksPage = () => {
 
   // Cargar libros al montar el componente
   useEffect(() => {
+    document.title = "Libros | LibroYa Admin";
     loadBooks();
   }, [loadBooks]);
 

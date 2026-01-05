@@ -115,6 +115,7 @@ const UsersPage = () => {
 
   // Cargar usuarios al montar el componente
   useEffect(() => {
+    document.title = "Usuarios | LibroYa Admin";
     loadUsers();
   }, [loadUsers]);
 

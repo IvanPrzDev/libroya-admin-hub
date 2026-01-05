@@ -78,3 +78,10 @@ export const completeReservation = async (id: string): Promise<Reservation> => {
 export const deleteReservation = async (id: string): Promise<void> => {
   await api.delete(`${BASE_PATH}/${id}`);
 };
+
+export const testScheduler = async (): Promise<{ message: string }> => {
+  const { data } = await api.get<{ message: string }>(
+    `${BASE_PATH}/test-scheduler`
+  );
+  return data;
+};

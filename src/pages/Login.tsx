@@ -14,6 +14,10 @@ const Login = () => {
   const navigate = useNavigate();
   const { login, isLoading, isAuthenticated } = useAuth();
 
+  useEffect(() => {
+    document.title = "Iniciar Sesión | LibroYa Admin";
+  }, []);
+
   // Si ya está autenticado, redirigir al dashboard
   useEffect(() => {
     if (isAuthenticated) {

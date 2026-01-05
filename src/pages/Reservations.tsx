@@ -146,10 +146,10 @@ const Reservations = () => {
 
   // Cargar reservas al montar
   useEffect(() => {
+    document.title = "Reservas | LibroYa Admin";
     loadReservations();
   }, [loadReservations]);
 
-  // Filtrar reservas
   const filteredReservations = reservations.filter((reservation) => {
     const user = users[reservation.userId];
     const book = books[reservation.bookId];
@@ -168,7 +168,6 @@ const Reservations = () => {
     const matchesStatus =
       statusFilter === "all" || reservation.status === statusFilter;
 
-    // Filtro de próximas a vencer (≤3 días)
     const matchesExpiringSoon =
       !showExpiringSoon ||
       (() => {
@@ -180,7 +179,6 @@ const Reservations = () => {
         return daysUntilReturn >= 0 && daysUntilReturn <= 3;
       })();
 
-    // Filtro de corrompidas
     const matchesCorrupted =
       !showCorruptedOnly || reservation.status === "CORRUPTED";
 
