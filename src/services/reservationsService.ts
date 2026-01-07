@@ -60,15 +60,6 @@ export const confirmReservationByQr = async (
   return data;
 };
 
-export const confirmReservationByLocator = async (
-  locator: string
-): Promise<Reservation> => {
-  const { data } = await api.post<Reservation>(`${BASE_PATH}/confirm-locator`, {
-    locator,
-  });
-  return data;
-};
-
 export const cancelReservation = async (
   id: string,
   reason: string

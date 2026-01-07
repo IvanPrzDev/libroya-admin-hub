@@ -1,73 +1,99 @@
-# Welcome to your Lovable project
+# LibroYa Admin Hub
 
-## Project info
+Panel de administración para la gestión de libros, usuarios y reservas de la plataforma LibroYa.
 
-**URL**: https://lovable.dev/projects/REPLACE_WITH_PROJECT_ID
+## Características
 
-## How can I edit this code?
+- Gestión completa de libros (crear, editar, eliminar)
+- Administración de usuarios y sus reservas
+- Sistema de reservas con estados (pendiente, confirmada, completada, cancelada)
+- Confirmación de reservas mediante código QR o localizador alfanumérico
+- Dashboard con métricas en tiempo real
+- Notificaciones de reservas próximas a vencer
+- Sistema de autenticación para administradores
 
-There are several ways of editing your application.
+## Tecnologías
 
-**Use Lovable**
+- React + TypeScript
+- Vite
+- Tailwind CSS
+- shadcn/ui
+- React Hook Form + Zod
+- Axios
+- date-fns
 
-Simply visit the [Lovable Project](https://lovable.dev/projects/REPLACE_WITH_PROJECT_ID) and start prompting.
+## Requisitos
 
-Changes made via Lovable will be committed automatically to this repo.
+- Node.js (versión 16 o superior)
+- npm
 
-**Use your preferred IDE**
-
-If you want to work locally using your own IDE, you can clone this repo and push changes. Pushed changes will also be reflected in Lovable.
-
-The only requirement is having Node.js & npm installed - [install with nvm](https://github.com/nvm-sh/nvm#installing-and-updating)
-
-Follow these steps:
+## Instalación
 
 ```sh
-# Step 1: Clone the repository using the project's Git URL.
-git clone <YOUR_GIT_URL>
+# Clonar el repositorio
+git clone <URL_DEL_REPOSITORIO>
 
-# Step 2: Navigate to the project directory.
-cd <YOUR_PROJECT_NAME>
+# Navegar al directorio del proyecto
+cd libroya-admin-hub
 
-# Step 3: Install the necessary dependencies.
-npm i
+# Instalar dependencias
+npm install
 
-# Step 4: Start the development server with auto-reloading and an instant preview.
+# Configurar variables de entorno
+# Copiar el archivo de ejemplo y configurar con tu URL de API
+cp .env.example .env
+# Editar .env con la URL correcta de tu backend
+
+# Iniciar el servidor de desarrollo
 npm run dev
 ```
 
-**Edit a file directly in GitHub**
+## Scripts disponibles
 
-- Navigate to the desired file(s).
-- Click the "Edit" button (pencil icon) at the top right of the file view.
-- Make your changes and commit the changes.
+```sh
+# Desarrollo
+npm run dev
 
-**Use GitHub Codespaces**
+# Build para producción
+npm run build
 
-- Navigate to the main page of your repository.
-- Click on the "Code" button (green button) near the top right.
-- Select the "Codespaces" tab.
-- Click on "New codespace" to launch a new Codespace environment.
-- Edit files directly within the Codespace and commit and push your changes once you're done.
+# Build para desarrollo
+npm run build:dev
 
-## What technologies are used for this project?
+# Preview del build
+npm run preview
 
-This project is built with:
+# Linting
+npm run lint
+```
 
-- Vite
-- TypeScript
-- React
-- shadcn-ui
-- Tailwind CSS
+## Estructura del proyecto
 
-## How can I deploy this project?
+```
+src/
+├── components/      # Componentes reutilizables
+├── contexts/        # Context API (autenticación)
+├── hooks/          # Custom hooks
+├── pages/          # Páginas de la aplicación
+├── services/       # Servicios de API
+├── types/          # Definiciones de TypeScript
+└── utils/          # Utilidades y constantes
+```
 
-Simply open [Lovable](https://lovable.dev/projects/REPLACE_WITH_PROJECT_ID) and click on Share -> Publish.
+## Variables de entorno
 
-## Can I connect a custom domain to my Lovable project?
+Crear un archivo `.env` en la raíz del proyecto con las siguientes variables:
 
-Yes, you can!
+```
+VITE_API_BASE_URL=<URL_DE_TU_BACKEND>
+```
 
-To connect a domain, navigate to Project > Settings > Domains and click Connect Domain.
+Ejemplo para desarrollo local:
 
-Read more here: [Setting up a custom domain](https://docs.lovable.dev/features/custom-domain#custom-domain)
+```
+VITE_API_BASE_URL=http://localhost:3000/api
+```
+
+## Licencia
+
+Proyecto publico realizado por Iván Pérez - Alumno en prácticas de Agilia.

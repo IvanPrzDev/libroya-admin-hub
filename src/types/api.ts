@@ -108,7 +108,6 @@ export interface Reservation {
   startDate: string;
   endDate: string;
   status: ReservationStatus;
-  locator?: string | null;
   createdAt: string;
   updatedAt: string;
 }

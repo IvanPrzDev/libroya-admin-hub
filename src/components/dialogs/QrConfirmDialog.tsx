@@ -46,29 +46,29 @@ const QrConfirmDialog = ({
         <DialogHeader>
           <DialogTitle className="flex items-center gap-2">
             <QrCode className="h-5 w-5" />
-            Confirmar Reserva con Código QR
+            Confirmar Reserva
           </DialogTitle>
           <DialogDescription>
-            Pega el código QR del correo electrónico o ingresa el código
-            localizador de 8 caracteres.
+            Escanea el código QR del correo o ingresa manualmente el ID de la
+            reserva.
           </DialogDescription>
         </DialogHeader>
 
         <form onSubmit={handleSubmit}>
           <div className="space-y-4 py-4">
             <div className="space-y-2">
-              <Label htmlFor="qrData">Código QR o Localizador</Label>
+              <Label htmlFor="qrData">ID de Reserva o Código QR</Label>
               <Input
                 id="qrData"
-                placeholder="Ej: GQWZEEW7 o JSON del QR"
+                placeholder="Ej: 64f1a5c123456789abcdef01"
                 value={qrData}
                 onChange={(e) => setQrData(e.target.value)}
                 disabled={isLoading}
                 className="font-mono text-xs"
               />
               <p className="text-xs text-muted-foreground">
-                Ingresa el localizador de 8 caracteres o el JSON completo del
-                código QR.
+                Ingresa el ID de la reserva (24 caracteres) que aparece en el
+                correo del usuario.
               </p>
             </div>
           </div>
