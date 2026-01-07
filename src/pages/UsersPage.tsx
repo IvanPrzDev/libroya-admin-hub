@@ -286,9 +286,6 @@ const UsersPage = () => {
                       <div className="flex items-start justify-between mb-3">
                         <div className="flex items-center gap-3">
                           <Avatar className="w-12 h-12">
-                            <AvatarImage
-                              src={`https://i.pravatar.cc/150?u=${user._id}`}
-                            />
                             <AvatarFallback className="bg-libroya-green text-white">
                               {getInitials(user.firstName, user.lastName)}
                             </AvatarFallback>

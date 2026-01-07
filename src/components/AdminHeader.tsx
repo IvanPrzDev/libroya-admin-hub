@@ -47,9 +47,8 @@ const AdminHeader = ({ title }: AdminHeaderProps) => {
           <DropdownMenuTrigger asChild>
             <div className="flex items-center gap-2 cursor-pointer hover:bg-secondary/50 rounded-lg px-2 py-1 transition-colors">
               <Avatar className="w-9 h-9">
-                <AvatarImage src="https://i.pravatar.cc/150?u=admin" />
-                <AvatarFallback className="bg-libroya-green text-white text-sm">
-                  AD
+                <AvatarFallback className="bg-libroya-green text-white font-semibold">
+                  IP
                 </AvatarFallback>
               </Avatar>
               <span className="text-sm font-medium text-foreground">

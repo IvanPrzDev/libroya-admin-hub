@@ -102,9 +102,8 @@ const AdminSidebar = ({ collapsed = false, onToggle }: AdminSidebarProps) => {
           )}
         >
           <Avatar className="w-10 h-10 border-2 border-white/30">
-            <AvatarImage src="https://i.pravatar.cc/150?u=admin" />
             <AvatarFallback className="bg-libroya-yellow text-libroya-green-dark font-semibold">
-              AG
+              IP
             </AvatarFallback>
           </Avatar>
           {!collapsed && (

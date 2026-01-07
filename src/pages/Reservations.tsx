@@ -229,10 +229,20 @@ const Reservations = () => {
   const handleQrConfirm = async (qrData: string) => {
     try {
       setIsQrLoading(true);
-      await reservationsService.confirmReservationByQr(qrData);
+
+      const isLocator = /^[A-Z0-9]{8}$/i.test(qrData.trim());
+
+      if (isLocator) {
+        await reservationsService.confirmReservationByLocator(qrData.trim());
+      } else {
+        await reservationsService.confirmReservationByQr(qrData);
+      }
+
       toast({
         title: "Reserva confirmada",
-        description: "La reserva se confirmó exitosamente con el código QR.",
+        description: isLocator
+          ? "La reserva se confirmó exitosamente con el código localizador."
+          : "La reserva se confirmó exitosamente con el código QR.",
       });
       setIsQrOpen(false);
       await loadReservations();
@@ -607,7 +617,7 @@ const Reservations = () => {
                                     className="gap-1"
                                   >
                                     <QrCode size={14} />
-                                    QR
+                                    Confirmar
                                   </Button>
                                 )}
 
