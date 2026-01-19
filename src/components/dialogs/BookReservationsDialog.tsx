@@ -20,11 +20,10 @@ import { Reservation, User } from "@/types";
 import {
   RESERVATION_STATUSES,
   RESERVATION_STATUS_COLORS,
-} from "@/utils/constants";
+} from "@/constants/reservations";
 import * as reservationsService from "@/services/reservationsService";
 import * as usersService from "@/services/usersService";
-import { format } from "date-fns";
-import { es } from "date-fns/locale";
+import { formatDate } from "@/utils/dates";
 
 interface BookReservationsDialogProps {
   open: boolean;
@@ -54,7 +53,7 @@ const BookReservationsDialog = ({
       // Cargar usuarios
       const userIds = [...new Set(data.map((r) => r.userId))];
       const usersData = await Promise.all(
-        userIds.map((id) => usersService.getUserById(id))
+        userIds.map((id) => usersService.getUserById(id)),
       );
       setUsers(Object.fromEntries(usersData.map((u) => [u._id, u])));
     } catch (error) {
@@ -69,10 +68,6 @@ const BookReservationsDialog = ({
       loadReservations();
     }
   }, [open, bookId, loadReservations]);
-
-  const formatDate = (dateString: string) => {
-    return format(new Date(dateString), "dd MMM, yyyy", { locale: es });
-  };
 
   const getUserName = (reservation: Reservation) => {
     const user = users[reservation.userId];

@@ -1,4 +1,5 @@
-import { useState } from "react";
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
 import { Button } from "@/components/ui/button";
 import {
   Dialog,
@@ -8,9 +9,20 @@ import {
   DialogHeader,
   DialogTitle,
 } from "@/components/ui/dialog";
+import {
+  Form,
+  FormControl,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+} from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
 import { QrCode } from "lucide-react";
+import {
+  qrConfirmSchema,
+  type QrConfirmFormData,
+} from "@/validations/reservation";
 
 interface QrConfirmDialogProps {
   open: boolean;
@@ -25,18 +37,21 @@ const QrConfirmDialog = ({
   onConfirm,
   isLoading,
 }: QrConfirmDialogProps) => {
-  const [qrData, setQrData] = useState("");
+  const form = useForm<QrConfirmFormData>({
+    resolver: zodResolver(qrConfirmSchema),
+    defaultValues: {
+      qrData: "",
+    },
+  });
 
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    if (!qrData.trim()) return;
-
-    await onConfirm(qrData);
-    setQrData("");
+  const handleSubmit = async (data: QrConfirmFormData) => {
+    await onConfirm(data.qrData);
+    form.reset();
+    onOpenChange(false);
   };
 
   const handleCancel = () => {
-    setQrData("");
+    form.reset();
     onOpenChange(false);
   };
 
@@ -54,43 +69,53 @@ const QrConfirmDialog = ({
           </DialogDescription>
         </DialogHeader>
 
-        <form onSubmit={handleSubmit}>
-          <div className="space-y-4 py-4">
-            <div className="space-y-2">
-              <Label htmlFor="qrData">ID de Reserva o Código QR</Label>
-              <Input
-                id="qrData"
-                placeholder="Ej: 64f1a5c123456789abcdef01"
-                value={qrData}
-                onChange={(e) => setQrData(e.target.value)}
-                disabled={isLoading}
-                className="font-mono text-xs"
-              />
-              <p className="text-xs text-muted-foreground">
-                Ingresa el ID de la reserva (24 caracteres) que aparece en el
-                correo del usuario.
-              </p>
-            </div>
-          </div>
+        <Form {...form}>
+          <form
+            onSubmit={form.handleSubmit(handleSubmit)}
+            className="space-y-4"
+          >
+            <FormField
+              control={form.control}
+              name="qrData"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>ID de Reserva o Código QR</FormLabel>
+                  <FormControl>
+                    <Input
+                      placeholder="Ej: 64f1a5c123456789abcdef01"
+                      disabled={isLoading}
+                      className="font-mono text-xs"
+                      {...field}
+                    />
+                  </FormControl>
+                  <p className="text-xs text-muted-foreground">
+                    Ingresa el ID de la reserva (24 caracteres) que aparece en
+                    el correo del usuario.
+                  </p>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
 
-          <DialogFooter>
-            <Button
-              type="button"
-              variant="outline"
-              onClick={handleCancel}
-              disabled={isLoading}
-            >
-              Cancelar
-            </Button>
-            <Button
-              type="submit"
-              disabled={isLoading || !qrData.trim()}
-              className="bg-libroya-green hover:bg-libroya-green-light"
-            >
-              {isLoading ? "Confirmando..." : "Confirmar"}
-            </Button>
-          </DialogFooter>
-        </form>
+            <DialogFooter>
+              <Button
+                type="button"
+                variant="outline"
+                onClick={handleCancel}
+                disabled={isLoading}
+              >
+                Cancelar
+              </Button>
+              <Button
+                type="submit"
+                disabled={isLoading}
+                className="bg-libroya-green hover:bg-libroya-green-light"
+              >
+                {isLoading ? "Confirmando..." : "Confirmar"}
+              </Button>
+            </DialogFooter>
+          </form>
+        </Form>
       </DialogContent>
     </Dialog>
   );

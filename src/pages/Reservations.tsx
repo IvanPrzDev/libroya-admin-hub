@@ -1,76 +1,21 @@
 import { useState, useEffect, useCallback } from "react";
-import {
-  Search,
-  Filter,
-  MoreHorizontal,
-  CheckCircle,
-  XCircle,
-  Check,
-  QrCode,
-  Edit,
-  Trash2,
-  Loader2,
-  Eye,
-  AlertTriangle,
-} from "lucide-react";
-import AdminHeader from "@/components/AdminHeader";
-import ReservationFormDialog from "@/components/forms/ReservationFormDialog";
+import { Loader2 } from "lucide-react";
+import AdminHeader from "@/components/layout/AdminHeader";
+import ReservationFormDialog from "@/components/dialogs/ReservationFormDialog";
 import QrConfirmDialog from "@/components/dialogs/QrConfirmDialog";
 import CancelReservationDialog from "@/components/dialogs/CancelReservationDialog";
 import ReservationDetailsDialog from "@/components/dialogs/ReservationDetailsDialog";
-import { Button } from "@/components/ui/button";
+import ConfirmDialog from "@/components/dialogs/ConfirmDialog";
+import ReservationsFilters from "@/components/reservations/ReservationsFilters";
+import ReservationsTable from "@/components/reservations/ReservationsTable";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Input } from "@/components/ui/input";
-import {
-  Table,
-  TableBody,
-  TableCell,
-  TableHead,
-  TableHeader,
-  TableRow,
-} from "@/components/ui/table";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
-import {
-  AlertDialog,
-  AlertDialogAction,
-  AlertDialogCancel,
-  AlertDialogContent,
-  AlertDialogDescription,
-  AlertDialogFooter,
-  AlertDialogHeader,
-  AlertDialogTitle,
-} from "@/components/ui/alert-dialog";
-import { Badge } from "@/components/ui/badge";
 import { useToast } from "@/hooks/use-toast";
 import * as reservationsService from "@/services/reservationsService";
 import * as usersService from "@/services/usersService";
 import * as booksService from "@/services/booksService";
-import {
-  Reservation,
-  ReservationStatus,
-  UpdateReservationRequest,
-  User,
-  Book,
-} from "@/types";
-import {
-  RESERVATION_STATUSES,
-  RESERVATION_STATUS_COLORS,
-} from "@/utils/constants";
-import { getErrorMessage } from "@/services/api";
-import { format, differenceInDays } from "date-fns";
-import { es } from "date-fns/locale";
+import { Reservation, UpdateReservationRequest, User, Book } from "@/types";
+import { getErrorMessage } from "@/utils/errorHandler";
+import { differenceInDays } from "date-fns";
 
 const Reservations = () => {
   const [reservations, setReservations] = useState<Reservation[]>([]);
@@ -82,18 +27,15 @@ const Reservations = () => {
   const [showExpiringSoon, setShowExpiringSoon] = useState(false);
   const [showCorruptedOnly, setShowCorruptedOnly] = useState(false);
 
-  // Estado para dialog de detalles
+  // Estados para dialogs
   const [detailsReservation, setDetailsReservation] =
     useState<Reservation | null>(null);
-
-  // Estados para dialogs
   const [isEditOpen, setIsEditOpen] = useState(false);
   const [selectedReservation, setSelectedReservation] =
     useState<Reservation | null>(null);
   const [isFormLoading, setIsFormLoading] = useState(false);
 
   const [isQrOpen, setIsQrOpen] = useState(false);
-  const [qrReservation, setQrReservation] = useState<Reservation | null>(null);
   const [isQrLoading, setIsQrLoading] = useState(false);
 
   const [isCancelOpen, setIsCancelOpen] = useState(false);
@@ -101,15 +43,13 @@ const Reservations = () => {
     useState<Reservation | null>(null);
   const [isCancelLoading, setIsCancelLoading] = useState(false);
 
+  const [reservationToComplete, setReservationToComplete] =
+    useState<Reservation | null>(null);
+  const [isCompleting, setIsCompleting] = useState(false);
+
   const [reservationToDelete, setReservationToDelete] =
     useState<Reservation | null>(null);
   const [isDeleting, setIsDeleting] = useState(false);
-
-  const [confirmAction, setConfirmAction] = useState<{
-    reservation: Reservation;
-    action: "complete";
-  } | null>(null);
-  const [isActionLoading, setIsActionLoading] = useState(false);
 
   const { toast } = useToast();
 
@@ -187,7 +127,7 @@ const Reservations = () => {
     );
   });
 
-  // Handlers para edición
+  // Handlers
   const handleOpenEdit = (reservation: Reservation) => {
     setSelectedReservation(reservation);
     setIsEditOpen(true);
@@ -200,7 +140,7 @@ const Reservations = () => {
       setIsFormLoading(true);
       await reservationsService.updateReservation(
         selectedReservation._id,
-        data
+        data,
       );
       toast({
         title: "Reserva actualizada",
@@ -220,9 +160,7 @@ const Reservations = () => {
     }
   };
 
-  // Handler para confirmar por QR
-  const handleOpenQr = (reservation: Reservation) => {
-    setQrReservation(reservation);
+  const handleOpenQr = () => {
     setIsQrOpen(true);
   };
 
@@ -248,7 +186,6 @@ const Reservations = () => {
     }
   };
 
-  // Handler para cancelar
   const handleOpenCancel = (reservation: Reservation) => {
     setCancelReservation(reservation);
     setIsCancelOpen(true);
@@ -261,7 +198,7 @@ const Reservations = () => {
       setIsCancelLoading(true);
       await reservationsService.cancelReservation(
         cancelReservation._id,
-        reason
+        reason,
       );
       toast({
         title: "Reserva cancelada",
@@ -271,8 +208,6 @@ const Reservations = () => {
       await loadReservations();
     } catch (error) {
       console.error("Error al cancelar reserva:", error);
-      const axiosError = error as { response?: { data?: unknown } };
-      console.error("Backend response:", axiosError.response?.data);
       toast({
         title: "Error",
         description: getErrorMessage(error),
@@ -284,22 +219,20 @@ const Reservations = () => {
   };
 
   const handleComplete = (reservation: Reservation) => {
-    setConfirmAction({ reservation, action: "complete" });
+    setReservationToComplete(reservation);
   };
 
   const handleConfirmComplete = async () => {
-    if (!confirmAction) return;
+    if (!reservationToComplete) return;
 
     try {
-      setIsActionLoading(true);
-      await reservationsService.completeReservation(
-        confirmAction.reservation._id
-      );
+      setIsCompleting(true);
+      await reservationsService.completeReservation(reservationToComplete._id);
       toast({
         title: "Reserva completada",
         description: "La reserva se marcó como completada.",
       });
-      setConfirmAction(null);
+      setReservationToComplete(null);
       await loadReservations();
     } catch (error) {
       console.error("Error al completar reserva:", error);
@@ -309,7 +242,7 @@ const Reservations = () => {
         variant: "destructive",
       });
     } finally {
-      setIsActionLoading(false);
+      setIsCompleting(false);
     }
   };
 
@@ -325,24 +258,16 @@ const Reservations = () => {
       });
       setReservationToDelete(null);
       await loadReservations();
-    } catch (error: unknown) {
-      const axiosError = error as {
-        response?: { data?: { message?: string } };
-      };
+    } catch (error) {
       console.error("Error al eliminar reserva:", error);
       toast({
         title: "Error al eliminar",
-        description:
-          axiosError.response?.data?.message || getErrorMessage(error),
+        description: getErrorMessage(error),
         variant: "destructive",
       });
     } finally {
       setIsDeleting(false);
     }
-  };
-
-  const formatDate = (dateString: string) => {
-    return format(new Date(dateString), "dd MMM, yyyy", { locale: es });
   };
 
   const getUserName = (reservation: Reservation) => {
@@ -352,39 +277,9 @@ const Reservations = () => {
       : "Usuario no encontrado";
   };
 
-  const getUserEmail = (reservation: Reservation) => {
-    const user = users[reservation.userId];
-    return user?.email || "N/A";
-  };
-
   const getBookTitle = (reservation: Reservation) => {
     const book = books[reservation.bookId];
     return book?.title || "Libro no encontrado";
-  };
-
-  const getBookAuthor = (reservation: Reservation) => {
-    const book = books[reservation.bookId];
-    return book?.author || "N/A";
-  };
-
-  const canConfirm = (status: ReservationStatus) => status === "PENDING";
-  const canComplete = (status: ReservationStatus) => status === "CONFIRMED";
-  const canCancel = (status: ReservationStatus) =>
-    status === "PENDING" || status === "CONFIRMED";
-
-  // Calcular días restantes y estado de urgencia
-  const getDaysRemaining = (endDate: string) => {
-    return differenceInDays(new Date(endDate), new Date());
-  };
-
-  const isExpiringSoon = (endDate: string, status: ReservationStatus) => {
-    const days = getDaysRemaining(endDate);
-    return status === "CONFIRMED" && days <= 3 && days >= 0;
-  };
-
-  const isOverdue = (endDate: string, status: ReservationStatus) => {
-    const days = getDaysRemaining(endDate);
-    return status === "CONFIRMED" && days < 0;
   };
 
   return (
@@ -407,61 +302,16 @@ const Reservations = () => {
               </div>
             </div>
 
-            <div className="flex flex-col gap-4 mt-4">
-              <div className="flex items-center gap-4">
-                <div className="relative flex-1 max-w-md">
-                  <Search
-                    className="absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground"
-                    size={18}
-                  />
-                  <Input
-                    placeholder="Buscar por usuario o libro..."
-                    value={searchTerm}
-                    onChange={(e) => setSearchTerm(e.target.value)}
-                    className="pl-10"
-                  />
-                </div>
-                <Select value={statusFilter} onValueChange={setStatusFilter}>
-                  <SelectTrigger className="w-48">
-                    <Filter size={16} className="mr-2" />
-                    <SelectValue placeholder="Filtrar por estado" />
-                  </SelectTrigger>
-                  <SelectContent>
-                    <SelectItem value="all">Todos los Estados</SelectItem>
-                    {Object.entries(RESERVATION_STATUSES).map(
-                      ([key, label]) => (
-                        <SelectItem key={key} value={key}>
-                          {label}
-                        </SelectItem>
-                      )
-                    )}
-                  </SelectContent>
-                </Select>
-              </div>
-
-              {/* Filtros adicionales */}
-              <div className="flex items-center gap-4">
-                <Button
-                  variant={showExpiringSoon ? "default" : "outline"}
-                  size="sm"
-                  onClick={() => setShowExpiringSoon(!showExpiringSoon)}
-                  className={
-                    showExpiringSoon ? "bg-orange-500 hover:bg-orange-600" : ""
-                  }
-                >
-                  <AlertTriangle size={14} className="mr-2" />
-                  Solo próximas a vencer
-                </Button>
-                <Button
-                  variant={showCorruptedOnly ? "destructive" : "outline"}
-                  size="sm"
-                  onClick={() => setShowCorruptedOnly(!showCorruptedOnly)}
-                >
-                  <AlertTriangle size={14} className="mr-2" />
-                  Solo corrompidas
-                </Button>
-              </div>
-            </div>
+            <ReservationsFilters
+              searchTerm={searchTerm}
+              onSearchChange={setSearchTerm}
+              statusFilter={statusFilter}
+              onStatusFilterChange={setStatusFilter}
+              showExpiringSoon={showExpiringSoon}
+              onExpiringSoonChange={setShowExpiringSoon}
+              showCorruptedOnly={showCorruptedOnly}
+              onCorruptedOnlyChange={setShowCorruptedOnly}
+            />
           </CardHeader>
 
           <CardContent>
@@ -470,215 +320,18 @@ const Reservations = () => {
                 <Loader2 className="h-8 w-8 animate-spin text-libroya-green" />
               </div>
             ) : (
-              <div className="rounded-md border">
-                <Table>
-                  <TableHeader>
-                    <TableRow>
-                      <TableHead>Usuario</TableHead>
-                      <TableHead>Libro</TableHead>
-                      <TableHead>Fechas</TableHead>
-                      <TableHead>Estado</TableHead>
-                      <TableHead className="text-right">Acciones</TableHead>
-                    </TableRow>
-                  </TableHeader>
-                  <TableBody>
-                    {filteredReservations.length === 0 ? (
-                      <TableRow>
-                        <TableCell
-                          colSpan={5}
-                          className="text-center py-8 text-muted-foreground"
-                        >
-                          No se encontraron reservas
-                        </TableCell>
-                      </TableRow>
-                    ) : (
-                      filteredReservations.map((reservation) => {
-                        const expiring = isExpiringSoon(
-                          reservation.endDate,
-                          reservation.status
-                        );
-                        const overdue = isOverdue(
-                          reservation.endDate,
-                          reservation.status
-                        );
-                        const daysLeft = getDaysRemaining(reservation.endDate);
-                        const isCorrupted = reservation.status === "CORRUPTED";
-
-                        return (
-                          <TableRow
-                            key={reservation._id}
-                            className={`${
-                              isCorrupted
-                                ? "bg-destructive/5 border-l-4 border-l-destructive"
-                                : overdue
-                                ? "bg-orange-50 border-l-4 border-l-orange-500"
-                                : expiring
-                                ? "bg-yellow-50 border-l-4 border-l-yellow-500"
-                                : ""
-                            }`}
-                          >
-                            <TableCell>
-                              <div>
-                                <div className="font-medium">
-                                  {getUserName(reservation)}
-                                </div>
-                                <div className="text-xs text-muted-foreground">
-                                  {getUserEmail(reservation)}
-                                </div>
-                              </div>
-                            </TableCell>
-                            <TableCell>
-                              <div>
-                                <div className="font-medium">
-                                  {getBookTitle(reservation)}
-                                </div>
-                                <div className="text-xs text-muted-foreground">
-                                  {getBookAuthor(reservation)}
-                                </div>
-                              </div>
-                            </TableCell>
-                            <TableCell>
-                              <div className="space-y-1">
-                                <div className="text-sm">
-                                  <div>{formatDate(reservation.startDate)}</div>
-                                  <div className="text-xs text-muted-foreground">
-                                    hasta {formatDate(reservation.endDate)}
-                                  </div>
-                                </div>
-                                {/* Indicadores de urgencia */}
-                                {expiring && !overdue && (
-                                  <Badge
-                                    variant="outline"
-                                    className="bg-yellow-100 text-yellow-800 border-yellow-300 text-xs"
-                                  >
-                                    <AlertTriangle size={10} className="mr-1" />
-                                    Vence en {daysLeft} día
-                                    {daysLeft !== 1 ? "s" : ""}
-                                  </Badge>
-                                )}
-                                {overdue && (
-                                  <Badge
-                                    variant="outline"
-                                    className="bg-orange-100 text-orange-800 border-orange-300 text-xs"
-                                  >
-                                    <AlertTriangle size={10} className="mr-1" />
-                                    Vencida ({Math.abs(daysLeft)} día
-                                    {Math.abs(daysLeft) !== 1 ? "s" : ""})
-                                  </Badge>
-                                )}
-                              </div>
-                            </TableCell>
-                            <TableCell>
-                              <div className="space-y-1">
-                                <Badge
-                                  variant="outline"
-                                  className={`${
-                                    RESERVATION_STATUS_COLORS[
-                                      reservation.status as ReservationStatus
-                                    ].badge
-                                  } ${
-                                    isCorrupted
-                                      ? "bg-destructive text-destructive-foreground border-destructive"
-                                      : ""
-                                  }`}
-                                >
-                                  {isCorrupted && (
-                                    <AlertTriangle size={12} className="mr-1" />
-                                  )}
-                                  {
-                                    RESERVATION_STATUSES[
-                                      reservation.status as ReservationStatus
-                                    ]
-                                  }
-                                </Badge>
-                                <div className="text-xs text-muted-foreground">
-                                  Creada: {formatDate(reservation.createdAt)}
-                                </div>
-                              </div>
-                            </TableCell>
-                            <TableCell className="text-right">
-                              <div className="flex items-center justify-end gap-2">
-                                {/* Confirmar por QR */}
-                                {canConfirm(reservation.status) && (
-                                  <Button
-                                    variant="outline"
-                                    size="sm"
-                                    onClick={() => handleOpenQr(reservation)}
-                                    className="gap-1"
-                                  >
-                                    <QrCode size={14} />
-                                    Confirmar
-                                  </Button>
-                                )}
-
-                                {/* Completar */}
-                                {canComplete(reservation.status) && (
-                                  <Button
-                                    variant="outline"
-                                    size="sm"
-                                    onClick={() => handleComplete(reservation)}
-                                    className="gap-1 text-libroya-success border-libroya-success hover:bg-libroya-success/10"
-                                  >
-                                    <CheckCircle size={14} />
-                                    Completar
-                                  </Button>
-                                )}
-
-                                {/* Menú de opciones */}
-                                <DropdownMenu>
-                                  <DropdownMenuTrigger asChild>
-                                    <Button variant="ghost" size="icon">
-                                      <MoreHorizontal size={16} />
-                                    </Button>
-                                  </DropdownMenuTrigger>
-                                  <DropdownMenuContent align="end">
-                                    <DropdownMenuItem
-                                      onClick={() =>
-                                        setDetailsReservation(reservation)
-                                      }
-                                    >
-                                      <Eye size={14} className="mr-2" />
-                                      Ver Detalles
-                                    </DropdownMenuItem>
-                                    <DropdownMenuItem
-                                      onClick={() =>
-                                        handleOpenEdit(reservation)
-                                      }
-                                    >
-                                      <Edit size={14} className="mr-2" />
-                                      Editar
-                                    </DropdownMenuItem>
-                                    {canCancel(reservation.status) && (
-                                      <DropdownMenuItem
-                                        onClick={() =>
-                                          handleOpenCancel(reservation)
-                                        }
-                                        className="text-destructive"
-                                      >
-                                        <XCircle size={14} className="mr-2" />
-                                        Cancelar
-                                      </DropdownMenuItem>
-                                    )}
-                                    <DropdownMenuItem
-                                      onClick={() =>
-                                        setReservationToDelete(reservation)
-                                      }
-                                      className="text-destructive"
-                                    >
-                                      <Trash2 size={14} className="mr-2" />
-                                      Eliminar
-                                    </DropdownMenuItem>
-                                  </DropdownMenuContent>
-                                </DropdownMenu>
-                              </div>
-                            </TableCell>
-                          </TableRow>
-                        );
-                      })
-                    )}
-                  </TableBody>
-                </Table>
-              </div>
+              <ReservationsTable
+                reservations={filteredReservations}
+                users={users}
+                books={books}
+                isLoading={isLoading}
+                onConfirm={handleOpenQr}
+                onComplete={handleComplete}
+                onEdit={handleOpenEdit}
+                onCancel={handleOpenCancel}
+                onDelete={setReservationToDelete}
+                onViewDetails={setDetailsReservation}
+              />
             )}
           </CardContent>
         </Card>
@@ -704,76 +357,41 @@ const Reservations = () => {
       />
 
       {/* Dialog de cancelación */}
-      <CancelReservationDialog
-        open={isCancelOpen}
-        onOpenChange={setIsCancelOpen}
-        onCancel={handleCancelSubmit}
-        isLoading={isCancelLoading}
-        reservationInfo={
-          cancelReservation
-            ? {
-                bookTitle: getBookTitle(cancelReservation),
-                userName: getUserName(cancelReservation),
-              }
-            : undefined
-        }
-      />
+      {cancelReservation && (
+        <CancelReservationDialog
+          open={isCancelOpen}
+          onOpenChange={setIsCancelOpen}
+          onCancel={handleCancelSubmit}
+          isLoading={isCancelLoading}
+          reservationInfo={{
+            bookTitle: getBookTitle(cancelReservation),
+            userName: getUserName(cancelReservation),
+          }}
+        />
+      )}
 
       {/* Confirmación de completar */}
-      <AlertDialog
-        open={!!confirmAction}
-        onOpenChange={() => setConfirmAction(null)}
-      >
-        <AlertDialogContent>
-          <AlertDialogHeader>
-            <AlertDialogTitle>¿Completar reserva?</AlertDialogTitle>
-            <AlertDialogDescription>
-              Esto marcará la reserva como completada y el libro volverá a estar
-              disponible para nuevas reservas.
-            </AlertDialogDescription>
-          </AlertDialogHeader>
-          <AlertDialogFooter>
-            <AlertDialogCancel disabled={isActionLoading}>
-              Cancelar
-            </AlertDialogCancel>
-            <AlertDialogAction
-              onClick={handleConfirmComplete}
-              disabled={isActionLoading}
-              className="bg-libroya-green hover:bg-libroya-green-light"
-            >
-              {isActionLoading ? "Completando..." : "Completar"}
-            </AlertDialogAction>
-          </AlertDialogFooter>
-        </AlertDialogContent>
-      </AlertDialog>
+      <ConfirmDialog
+        open={!!reservationToComplete}
+        onOpenChange={() => setReservationToComplete(null)}
+        title="¿Completar reserva?"
+        description="Esto marcará la reserva como completada y el libro volverá a estar disponible para nuevas reservas."
+        confirmText="Completar"
+        onConfirm={handleConfirmComplete}
+        isLoading={isCompleting}
+      />
 
       {/* Confirmación de eliminación */}
-      <AlertDialog
+      <ConfirmDialog
         open={!!reservationToDelete}
         onOpenChange={() => setReservationToDelete(null)}
-      >
-        <AlertDialogContent>
-          <AlertDialogHeader>
-            <AlertDialogTitle>¿Estás seguro?</AlertDialogTitle>
-            <AlertDialogDescription>
-              Esta acción eliminará permanentemente la reserva. Esta acción no
-              se puede deshacer.
-            </AlertDialogDescription>
-          </AlertDialogHeader>
-          <AlertDialogFooter>
-            <AlertDialogCancel disabled={isDeleting}>
-              Cancelar
-            </AlertDialogCancel>
-            <AlertDialogAction
-              onClick={handleDelete}
-              disabled={isDeleting}
-              className="bg-destructive hover:bg-destructive/90"
-            >
-              {isDeleting ? "Eliminando..." : "Eliminar"}
-            </AlertDialogAction>
-          </AlertDialogFooter>
-        </AlertDialogContent>
-      </AlertDialog>
+        title="¿Estás seguro?"
+        description="Esta acción eliminará permanentemente la reserva. Esta acción no se puede deshacer."
+        confirmText="Eliminar"
+        onConfirm={handleDelete}
+        isLoading={isDeleting}
+        variant="destructive"
+      />
 
       {/* Dialog de detalles de reserva */}
       <ReservationDetailsDialog
