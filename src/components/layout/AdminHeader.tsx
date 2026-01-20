@@ -1,5 +1,4 @@
-import { Search, Bell, ChevronDown, LogOut, Menu } from "lucide-react";
-import { Input } from "@/components/ui/input";
+import { ChevronDown, LogOut, Menu } from "lucide-react";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
 import {
@@ -39,24 +38,6 @@ const AdminHeader = ({ title }: AdminHeaderProps) => {
       </div>
 
       <div className="flex items-center gap-4">
-        {/* Search */}
-        <div className="relative w-80 hidden md:block">
-          <Search
-            className="absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground"
-            size={18}
-          />
-          <Input
-            placeholder="Buscar aquí..."
-            className="pl-10 bg-secondary/50 border-0 focus-visible:ring-1 focus-visible:ring-primary"
-          />
-        </div>
-
-        {/* Notifications */}
-        <Button variant="ghost" size="icon" className="relative">
-          <Bell size={20} className="text-muted-foreground" />
-          <span className="absolute top-1 right-1 w-2 h-2 bg-libroya-error rounded-full" />
-        </Button>
-
         {/* User Menu */}
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
