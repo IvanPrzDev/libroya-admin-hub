@@ -11,11 +11,10 @@ import { Badge } from "@/components/ui/badge";
 import {
   RESERVATION_STATUSES,
   RESERVATION_STATUS_COLORS,
-} from "@/utils/constants";
+} from "@/constants/reservations";
 import * as usersService from "@/services/usersService";
 import * as booksService from "@/services/booksService";
-import { format } from "date-fns";
-import { es } from "date-fns/locale";
+import { formatDate, formatDateTime } from "@/utils/dates";
 import {
   Calendar,
   Clock,
@@ -62,14 +61,6 @@ const ReservationDetailsDialog = ({
   }, [reservation, open]);
 
   if (!reservation) return null;
-
-  const formatDate = (dateString: string) => {
-    return format(new Date(dateString), "PPP", { locale: es });
-  };
-
-  const formatDateTime = (dateString: string) => {
-    return format(new Date(dateString), "PPP 'a las' p", { locale: es });
-  };
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>

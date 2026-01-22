@@ -1,31 +1,30 @@
-import { api } from "./api";
+import { api } from "@/config/axios";
 import { Book, CreateBookRequest, UpdateBookRequest } from "@/types";
-
-const BASE_PATH = "/admin/books";
+import { BOOKS_ENDPOINTS } from "@/constants/endpoints";
 
 export const getAllBooks = async (): Promise<Book[]> => {
-  const { data } = await api.get<Book[]>(BASE_PATH);
+  const { data } = await api.get<Book[]>(BOOKS_ENDPOINTS.BASE);
   return data;
 };
 
 export const getBookById = async (id: string): Promise<Book> => {
-  const { data } = await api.get<Book>(`${BASE_PATH}/${id}`);
+  const { data } = await api.get<Book>(BOOKS_ENDPOINTS.BY_ID(id));
   return data;
 };
 
 export const createBook = async (book: CreateBookRequest): Promise<Book> => {
-  const { data } = await api.post<Book>(BASE_PATH, book);
+  const { data } = await api.post<Book>(BOOKS_ENDPOINTS.BASE, book);
   return data;
 };
 
 export const updateBook = async (
   id: string,
-  book: UpdateBookRequest
+  book: UpdateBookRequest,
 ): Promise<Book> => {
-  const { data } = await api.patch<Book>(`${BASE_PATH}/${id}`, book);
+  const { data } = await api.patch<Book>(BOOKS_ENDPOINTS.BY_ID(id), book);
   return data;
 };
 
 export const deleteBook = async (id: string): Promise<void> => {
-  await api.delete(`${BASE_PATH}/${id}`);
+  await api.delete(BOOKS_ENDPOINTS.BY_ID(id));
 };

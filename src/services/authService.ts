@@ -1,10 +1,14 @@
-import { api } from "./api";
+import { api } from "@/config/axios";
 import { LoginRequest, LoginResponse } from "@/types";
+import { AUTH_ENDPOINTS } from "@/constants/endpoints";
 
 export const login = async (
-  credentials: LoginRequest
+  credentials: LoginRequest,
 ): Promise<LoginResponse> => {
-  const { data } = await api.post<LoginResponse>("/auth/login", credentials);
+  const { data } = await api.post<LoginResponse>(
+    AUTH_ENDPOINTS.LOGIN,
+    credentials,
+  );
 
   // Guardar token en localStorage
   if (data.accessToken) {

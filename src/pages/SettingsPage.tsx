@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import { Calendar, PlayCircle, Loader2 } from "lucide-react";
-import AdminHeader from "@/components/AdminHeader";
+import AdminHeader from "@/components/layout/AdminHeader";
+import ConfirmDialog from "@/components/dialogs/ConfirmDialog";
 import {
   Card,
   CardContent,
@@ -10,19 +11,9 @@ import {
 } from "@/components/ui/card";
 import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
-import {
-  AlertDialog,
-  AlertDialogAction,
-  AlertDialogCancel,
-  AlertDialogContent,
-  AlertDialogDescription,
-  AlertDialogFooter,
-  AlertDialogHeader,
-  AlertDialogTitle,
-} from "@/components/ui/alert-dialog";
 import { useToast } from "@/hooks/use-toast";
 import * as reservationsService from "@/services/reservationsService";
-import { getErrorMessage } from "@/services/api";
+import { getErrorMessage } from "@/utils/errorHandler";
 
 const SettingsPage = () => {
   const [isSchedulerLoading, setIsSchedulerLoading] = useState(false);
@@ -110,46 +101,27 @@ const SettingsPage = () => {
       </div>
 
       {/* Confirmation Dialog */}
-      <AlertDialog
+      <ConfirmDialog
         open={showSchedulerConfirm}
         onOpenChange={setShowSchedulerConfirm}
-      >
-        <AlertDialogContent>
-          <AlertDialogHeader>
-            <AlertDialogTitle>¿Ejecutar tareas del scheduler?</AlertDialogTitle>
-            <AlertDialogDescription>
-              Esta acción ejecutará las siguientes tareas:
-              <ul className="list-disc list-inside mt-2 space-y-1">
-                <li>Cancelar reservas PENDING con más de 24h sin confirmar</li>
-                <li>Marcar como CORRUPTED las reservas CONFIRMED vencidas</li>
-              </ul>
-              <p className="mt-2 text-sm font-medium">
-                Esta operación puede tardar unos segundos si hay muchas
-                reservas.
-              </p>
-            </AlertDialogDescription>
-          </AlertDialogHeader>
-          <AlertDialogFooter>
-            <AlertDialogCancel disabled={isSchedulerLoading}>
-              Cancelar
-            </AlertDialogCancel>
-            <AlertDialogAction
-              onClick={handleTestScheduler}
-              disabled={isSchedulerLoading}
-              className="bg-libroya-green hover:bg-libroya-green-light"
-            >
-              {isSchedulerLoading ? (
-                <>
-                  <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                  Ejecutando...
-                </>
-              ) : (
-                "Confirmar"
-              )}
-            </AlertDialogAction>
-          </AlertDialogFooter>
-        </AlertDialogContent>
-      </AlertDialog>
+        title="¿Ejecutar tareas del scheduler?"
+        description={
+          <>
+            Esta acción ejecutará las siguientes tareas:
+            <ul className="list-disc list-inside mt-2 space-y-1">
+              <li>Cancelar reservas PENDING con más de 24h sin confirmar</li>
+              <li>Marcar como CORRUPTED las reservas CONFIRMED vencidas</li>
+            </ul>
+            <p className="mt-2 text-sm font-medium">
+              Esta operación puede tardar unos segundos si hay muchas reservas.
+            </p>
+          </>
+        }
+        onConfirm={handleTestScheduler}
+        isLoading={isSchedulerLoading}
+        confirmText="Confirmar"
+        cancelText="Cancelar"
+      />
     </>
   );
 };
