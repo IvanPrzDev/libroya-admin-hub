@@ -141,7 +141,11 @@ const ReservationForm = ({
             render={({ field }) => (
               <FormItem className="col-span-2">
                 <FormLabel>Usuario *</FormLabel>
-                <Select onValueChange={field.onChange} value={field.value}>
+                <Select
+                  onValueChange={field.onChange}
+                  value={field.value}
+                  disabled
+                >
                   <FormControl>
                     <SelectTrigger>
                       <SelectValue placeholder="Selecciona un usuario" />
@@ -167,7 +171,11 @@ const ReservationForm = ({
             render={({ field }) => (
               <FormItem className="col-span-2">
                 <FormLabel>Libro *</FormLabel>
-                <Select onValueChange={field.onChange} value={field.value}>
+                <Select
+                  onValueChange={field.onChange}
+                  value={field.value}
+                  disabled
+                >
                   <FormControl>
                     <SelectTrigger>
                       <SelectValue placeholder="Selecciona un libro" />
