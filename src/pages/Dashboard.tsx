@@ -30,15 +30,15 @@ const Dashboard = () => {
     try {
       setIsLoading(true);
       // Cargar todos los datos en paralelo
-      const [reservationsData, usersData, booksData] = await Promise.all([
+      const [reservationsData, usersData, booksResponse] = await Promise.all([
         reservationsService.getAllReservations(),
         usersService.getAllUsers(),
-        booksService.getAllBooks(),
+        booksService.getAllBooks({ limit: 100 }), // Obtener suficientes libros para el dashboard
       ]);
 
       setReservations(reservationsData);
       setAllUsers(usersData);
-      setAllBooks(booksData);
+      setAllBooks(booksResponse.data); // Extraer el array de data
 
       // Crear diccionarios para acceso rápido
       const userIds = [...new Set(reservationsData.map((r) => r.userId))];

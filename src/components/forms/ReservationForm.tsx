@@ -97,12 +97,12 @@ const ReservationForm = ({
   const loadData = async () => {
     try {
       setIsLoadingData(true);
-      const [usersData, booksData] = await Promise.all([
+      const [usersData, booksResponse] = await Promise.all([
         usersService.getAllUsers(),
-        booksService.getAllBooks(),
+        booksService.getAllBooks({ limit: 100 }),
       ]);
       setUsers(usersData);
-      setBooks(booksData);
+      setBooks(booksResponse.data);
     } catch (error) {
       console.error("Error al cargar datos:", error);
     } finally {

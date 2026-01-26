@@ -1,4 +1,4 @@
-import { useState, useEffect, useCallback } from "react";
+import { useState, useEffect, useCallback, useMemo } from "react";
 import { Plus, Loader2 } from "lucide-react";
 import AdminHeader from "@/components/layout/AdminHeader";
 import BookFormDialog from "@/components/dialogs/BookFormDialog";
@@ -6,19 +6,30 @@ import BookReservationsDialog from "@/components/dialogs/BookReservationsDialog"
 import ConfirmDialog from "@/components/dialogs/ConfirmDialog";
 import BooksFilters from "@/components/books/BooksFilters";
 import BooksGrid from "@/components/books/BooksGrid";
+import BooksPagination from "@/components/books/BooksPagination";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { useToast } from "@/hooks/use-toast";
+import { useBooks } from "@/hooks/queries/booksHooks";
 import * as booksService from "@/services/booksService";
 import * as reservationsService from "@/services/reservationsService";
 import { Book, CreateBookRequest, UpdateBookRequest } from "@/types";
 import { getErrorMessage } from "@/utils/errorHandler";
 
 const BooksPage = () => {
-  const [books, setBooks] = useState<Book[]>([]);
-  const [isLoading, setIsLoading] = useState(true);
+  // Paginación
+  const [page, setPage] = useState(1);
+  const [limit, setLimit] = useState(10);
+
+  // Filtros locales (en frontend hasta que se implemente en backend)
   const [searchTerm, setSearchTerm] = useState("");
   const [genreFilter, setGenreFilter] = useState<string>("all");
+
+  // Query para obtener libros paginados
+  const { data, isLoading, refetch } = useBooks(page, limit);
+  const books = useMemo(() => data?.data || [], [data?.data]);
+  const paginationMeta = data?.meta;
+
   const [isFormOpen, setIsFormOpen] = useState(false);
   const [selectedBook, setSelectedBook] = useState<Book | null>(null);
   const [isFormLoading, setIsFormLoading] = useState(false);
@@ -33,28 +44,10 @@ const BooksPage = () => {
   const [isDeleting, setIsDeleting] = useState(false);
   const { toast } = useToast();
 
-  const loadBooks = useCallback(async () => {
-    try {
-      setIsLoading(true);
-      const data = await booksService.getAllBooks();
-      setBooks(data);
-    } catch (error) {
-      console.error("Error al cargar libros:", error);
-      toast({
-        title: "Error",
-        description: getErrorMessage(error),
-        variant: "destructive",
-      });
-    } finally {
-      setIsLoading(false);
-    }
-  }, [toast]);
-
-  // Cargar libros al montar el componente
+  // Configurar título al montar
   useEffect(() => {
     document.title = "Libros | LibroYa Admin";
-    loadBooks();
-  }, [loadBooks]);
+  }, []);
 
   const loadReservationCounts = useCallback(async () => {
     try {
@@ -92,14 +85,26 @@ const BooksPage = () => {
   }, [books, loadReservationCounts]);
 
   // Filtrar libros localmente
-  const filteredBooks = books.filter((book) => {
-    const matchesSearch =
-      book.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      book.author.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      book.isbn?.toLowerCase().includes(searchTerm.toLowerCase());
-    const matchesGenre = genreFilter === "all" || book.genre === genreFilter;
-    return matchesSearch && matchesGenre;
-  });
+  const filteredBooks = useMemo(() => {
+    return books.filter((book) => {
+      const matchesSearch =
+        book.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        book.author.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        book.isbn?.toLowerCase().includes(searchTerm.toLowerCase());
+      const matchesGenre = genreFilter === "all" || book.genre === genreFilter;
+      return matchesSearch && matchesGenre;
+    });
+  }, [books, searchTerm, genreFilter]);
+
+  // Handlers de paginación
+  const handlePageChange = (newPage: number) => {
+    setPage(newPage);
+  };
+
+  const handleLimitChange = (newLimit: number) => {
+    setLimit(newLimit);
+    setPage(1);
+  };
 
   // Handlers para crear/editar
   const handleOpenForm = (book?: Book) => {
@@ -134,7 +139,7 @@ const BooksPage = () => {
       }
 
       handleCloseForm();
-      await loadBooks();
+      await refetch();
     } catch (error) {
       console.error("Error al guardar libro:", error);
       toast({
@@ -158,7 +163,7 @@ const BooksPage = () => {
         description: "El libro se eliminó correctamente.",
       });
       setBookToDelete(null);
-      await loadBooks();
+      await refetch();
     } catch (error) {
       console.error("Error al eliminar libro:", error);
       toast({
@@ -186,7 +191,7 @@ const BooksPage = () => {
                 <p className="text-sm text-muted-foreground mt-1">
                   {isLoading
                     ? "Cargando..."
-                    : `${books.length} libros en la biblioteca`}
+                    : `${paginationMeta?.total || 0} libros en la biblioteca`}
                 </p>
               </div>
               <Button
@@ -219,6 +224,15 @@ const BooksPage = () => {
                 setReservationsDialogBook({ id: bookId, title: bookTitle })
               }
             />
+
+            {/* Componente de paginación */}
+            {paginationMeta && !isLoading && (
+              <BooksPagination
+                meta={paginationMeta}
+                onPageChange={handlePageChange}
+                onLimitChange={handleLimitChange}
+              />
+            )}
           </CardContent>
         </Card>
       </div>
