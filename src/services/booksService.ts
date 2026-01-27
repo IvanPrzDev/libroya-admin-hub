@@ -1,9 +1,20 @@
 import { api } from "@/config/axios";
-import { Book, CreateBookRequest, UpdateBookRequest } from "@/types";
+import {
+  Book,
+  CreateBookRequest,
+  UpdateBookRequest,
+  PaginatedResponse,
+  PaginationParams,
+} from "@/types";
 import { BOOKS_ENDPOINTS } from "@/constants/endpoints";
 
-export const getAllBooks = async (): Promise<Book[]> => {
-  const { data } = await api.get<Book[]>(BOOKS_ENDPOINTS.BASE);
+export const getAllBooks = async (
+  params?: PaginationParams,
+): Promise<PaginatedResponse<Book>> => {
+  const { data } = await api.get<PaginatedResponse<Book>>(
+    BOOKS_ENDPOINTS.BASE,
+    { params },
+  );
   return data;
 };
 

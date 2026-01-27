@@ -6,14 +6,20 @@ import { Book, CreateBookRequest, UpdateBookRequest } from "@/types";
 export const BOOKS_KEYS = {
   all: ["books"] as const,
   lists: () => [...BOOKS_KEYS.all, "list"] as const,
-  list: (filters?: string) => [...BOOKS_KEYS.lists(), { filters }] as const,
+  list: (page?: number, limit?: number) =>
+    [...BOOKS_KEYS.lists(), { page, limit }] as const,
   details: () => [...BOOKS_KEYS.all, "detail"] as const,
   detail: (id: string) => [...BOOKS_KEYS.details(), id] as const,
 };
-export const useBooks = () => {
+
+export const useBooks = (page?: number, limit?: number) => {
   return useQuery({
-    queryKey: BOOKS_KEYS.lists(),
-    queryFn: () => booksService.getAllBooks(),
+    queryKey: BOOKS_KEYS.list(page, limit),
+    queryFn: () =>
+      booksService.getAllBooks({
+        page,
+        limit,
+      }),
   });
 };
 

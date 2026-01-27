@@ -1,3 +1,4 @@
+<<<<<<< README.md
 # LibroYa Admin Hub
 
 Panel de administración para la gestión de libros, usuarios y reservas de la plataforma LibroYa.
