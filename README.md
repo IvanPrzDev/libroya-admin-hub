@@ -1,7 +1,16 @@
 <<<<<<< README.md
+
 # LibroYa Admin Hub
 
 Panel de administración para la gestión de libros, usuarios y reservas de la plataforma LibroYa.
+
+La aplicacion se divide en 3 proyectos:
+
+. libroya-admin-hub (front de admin, ese proyecto!)
+
+. libroya-user-hub (front de administracion https://github.com/IvanPrzDev/libroya-user-hub)
+
+. nestjs-library-api (backend https://github.com/IvanPrzDev/nestjs-library-api)
 
 ## Características
 
